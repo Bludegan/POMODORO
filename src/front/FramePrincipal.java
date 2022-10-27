@@ -50,6 +50,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void pararYAvisar() {
         t.stop();
         JOptionPane.showMessageDialog(this, "Se ha acabado el tiempo para su actividad.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        btnEmpezar.setEnabled(true);
+        btnPausar.setEnabled(false);
     }
     
     private void actualizarLabel() {
@@ -136,7 +138,12 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEmpezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpezarActionPerformed
+        m = 0;
+        s = 0;
+        cs = 0;
         t.start();
+        btnEmpezar.setEnabled(false);
+        btnPausar.setEnabled(true);
     }//GEN-LAST:event_btnEmpezarActionPerformed
 
     private void btnPausarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPausarActionPerformed
