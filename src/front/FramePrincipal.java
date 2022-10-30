@@ -8,12 +8,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import front.Frm_Agregar;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import ObjectosNegocio.Actividades;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import DAO.PendientesDAO;
+import java.util.List;
+import javax.swing.JButton;
 
 /**
  *
  * @author danie
  */
 public class FramePrincipal extends javax.swing.JFrame {
+
+    PendientesDAO PendienteControl = new PendientesDAO();
 
     /**
      * Creates new form FramePrincipal
@@ -22,12 +34,13 @@ public class FramePrincipal extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         t = new Timer(10, acciones);
+        this.cargarTabla();
     }
-    
+
     private boolean banderaPausa = true;
     private Timer t;
     private int m, s, cs;
-    
+
     private ActionListener acciones = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -46,19 +59,19 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         }
     };
-    
+
     private void pararYAvisar() {
         t.stop();
         JOptionPane.showMessageDialog(this, "Se ha acabado el tiempo para su actividad.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
         btnEmpezar.setEnabled(true);
         btnPausar.setEnabled(false);
     }
-    
+
     private void actualizarLabel() {
         String tiempo = (m <= 9 ? "0" : "") + m + ":" + (s <= 9 ? "0" : "") + s + ":" + (cs <= 9 ? "0" : "") + cs;
         lblTiempo.setText(tiempo);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,8 +85,16 @@ public class FramePrincipal extends javax.swing.JFrame {
         lblTiempo = new javax.swing.JLabel();
         btnEmpezar = new javax.swing.JButton();
         btnPausar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPendientes = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        Btn_Agregar_Tarea = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Tabla_Terminada = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         lblTiempo.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblTiempo.setText("00:00:00");
@@ -95,32 +116,125 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
+        tblPendientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Actividad"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblPendientes);
+        if (tblPendientes.getColumnModel().getColumnCount() > 0) {
+            tblPendientes.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Tareas Terminada");
+
+        Btn_Agregar_Tarea.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Btn_Agregar_Tarea.setText("Agregar Tarea");
+        Btn_Agregar_Tarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_Agregar_TareaActionPerformed(evt);
+            }
+        });
+
+        Tabla_Terminada.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Acitividad"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(Tabla_Terminada);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("Tareas Pendientes");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(530, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(209, 209, 209)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(87, 87, 87))
+                        .addComponent(jLabel2)
+                        .addGap(282, 282, 282)
+                        .addComponent(jLabel1)
+                        .addGap(99, 99, 99))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblTiempo)
+                        .addGap(18, 18, 18)
                         .addComponent(btnEmpezar)
                         .addGap(18, 18, 18)
                         .addComponent(btnPausar)
-                        .addGap(170, 170, 170))))
+                        .addGap(20, 20, 20))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addComponent(lblTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEmpezar)
-                    .addComponent(btnPausar))
-                .addContainerGap(329, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEmpezar)
+                            .addComponent(btnPausar))
+                        .addGap(19, 19, 19)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1))
+                .addGap(141, 141, 141))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -158,6 +272,43 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPausarActionPerformed
 
+    public void cargarTabla() {
+        this.PendienteControl.crearConexion();
+        List<Actividades> list = this.PendienteControl.consultar();
+        System.out.println(list);
+        DefaultTableModel model = (DefaultTableModel) tblPendientes.getModel();
+        model.setRowCount(0);
+        list.forEach(pendiente -> {
+            model.addRow(new Object[]{
+                pendiente.getNombre_Tarea(),});
+        });
+    }
+
+
+    private void Btn_Agregar_TareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_Agregar_TareaActionPerformed
+//        Frm_Agregar panel = new Frm_Agregar();
+//        panel.setVisible(true);
+
+        String actividad = JOptionPane.showInputDialog(rootPane, "Tarea", "Agregar", JOptionPane.QUESTION_MESSAGE);
+        List<Actividades> list = this.PendienteControl.consultar();
+        if (actividad.isEmpty() || actividad.isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "La actividad esta vacia", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (actividad.length() > 100) {
+            JOptionPane.showMessageDialog(rootPane, "Logitud mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Actividades New_actividad = new Actividades(actividad);
+        if (list.contains(New_actividad)) {
+            JOptionPane.showMessageDialog(rootPane, "La actividad ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        PendienteControl.agregar(New_actividad);
+        JOptionPane.showMessageDialog(rootPane, "La actividad se agrego con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
+        this.cargarTabla();
+    }//GEN-LAST:event_Btn_Agregar_TareaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -194,9 +345,16 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Btn_Agregar_Tarea;
+    private javax.swing.JTable Tabla_Terminada;
     private javax.swing.JButton btnEmpezar;
     private javax.swing.JButton btnPausar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblTiempo;
+    private javax.swing.JTable tblPendientes;
     // End of variables declaration//GEN-END:variables
 }
