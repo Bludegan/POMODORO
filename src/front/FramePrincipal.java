@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import front.Frm_Agregar;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import ObjectosNegocio.Actividades;
