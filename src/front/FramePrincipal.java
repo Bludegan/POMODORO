@@ -8,15 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import ObjectosNegocio.Actividades;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import DAO.PendientesDAO;
 import java.util.List;
-import javax.swing.JButton;
 
 /**
  *
@@ -24,6 +19,9 @@ import javax.swing.JButton;
  */
 public class FramePrincipal extends javax.swing.JFrame {
 
+    private final int TIEMPO_DESCANSO = 1;
+    private final int TIEMPO_TRABAJO = 2;
+    private final int TIEMPO_DESCANSO_LARGO = 3;
     PendientesDAO PendienteControl = new PendientesDAO();
 
     /**
@@ -32,17 +30,28 @@ public class FramePrincipal extends javax.swing.JFrame {
     public FramePrincipal() {
         initComponents();
         setLocationRelativeTo(null);
+        lblindicador.setVisible(false);
+        btnContinuar.setVisible(false);
         t = new Timer(10, acciones);
+        timerLB = new Timer(500, accionesLblParpadeante);
         this.cargarTabla();
+        actualizarLabel();
+        actualizaLblContadorDescansos();
     }
 
+    private boolean esDescanso = false;
+    private byte contDescansos = 0;
+    private boolean parpadea = false;
     private boolean banderaPausa = true;
     private Timer t;
+    private Timer timerLB;
     private int m, s, cs;
+    private int contParpadeante;
 
     private ActionListener acciones = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
+            /*
             cs++;
             if (cs == 100) {
                 cs = 0;
@@ -56,20 +65,74 @@ public class FramePrincipal extends javax.swing.JFrame {
             if (m == 5) {
                 pararYAvisar();
             }
+             */
+            if (cs > 0) {
+                cs--;
+            } else {
+                if (s > 0) {
+                    s--;
+                    cs = 99;
+                } else if (m > 0) {
+                    m--;
+                    s = 59;
+                    cs = 99;
+                }
+            }
+            if (s <= 5) {
+                mostrarIndicador();
+            }
+            actualizarLabel();
         }
     };
 
-    private void pararYAvisar() {
-        t.stop();
-        JOptionPane.showMessageDialog(this, "Se ha acabado el tiempo para su actividad.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-        btnEmpezar.setEnabled(true);
-        btnPausar.setEnabled(false);
+    private void setTiempos(int tipo) {
+        switch (tipo) {
+            case TIEMPO_DESCANSO:
+                m = 0;
+                s = 10;
+                cs = 0;
+                break;
+            case TIEMPO_TRABAJO:
+                m = 0;
+                s = 20;
+                cs = 0;
+                break;
+            case TIEMPO_DESCANSO_LARGO:
+                m = 0;
+                s = 15;
+                cs = 0;
+                break;
+        }
+    }
+
+    private boolean banderaYaActivado;
+
+    private void mostrarIndicador() {
+        if (s == 0 && m == 0 && cs == 0) {
+            lblindicador.setText("Se ha acabado el tiempo");
+            btnContinuar.setVisible(true);
+        } else {
+            lblindicador.setVisible(true);
+            lblindicador.setText("Faltan " + s + " segundos para acabar");
+        }
     }
 
     private void actualizarLabel() {
         String tiempo = (m <= 9 ? "0" : "") + m + ":" + (s <= 9 ? "0" : "") + s + ":" + (cs <= 9 ? "0" : "") + cs;
         lblTiempo.setText(tiempo);
     }
+    
+    private ActionListener accionesLblParpadeante = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (contParpadeante % 2 == 0) {
+                lblTiempo.setVisible(false);
+            } else {
+                lblTiempo.setVisible(true);
+            }
+            contParpadeante++;
+        }
+    };
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,6 +154,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         Tabla_Terminada = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        lblindicador = new javax.swing.JLabel();
+        btnContinuar = new javax.swing.JButton();
+        lblContadorDescansos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -185,11 +251,24 @@ public class FramePrincipal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Tareas Pendientes");
 
+        lblindicador.setForeground(new java.awt.Color(255, 51, 51));
+        lblindicador.setText("INDICADOR");
+        lblindicador.setToolTipText("");
+
+        btnContinuar.setText("Continuar");
+        btnContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContinuarActionPerformed(evt);
+            }
+        });
+
+        lblContadorDescansos.setText("Contador de Descansos");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(209, 209, 209)
@@ -198,36 +277,54 @@ public class FramePrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(282, 282, 282)
+                .addComponent(jLabel1)
+                .addGap(99, 99, 99))
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(282, 282, 282)
-                        .addComponent(jLabel1)
-                        .addGap(99, 99, 99))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblTiempo)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEmpezar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPausar)
-                        .addGap(20, 20, 20))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(310, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblindicador, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnContinuar))
+                        .addGap(31, 31, 31))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(lblContadorDescansos, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(lblTiempo)
+                .addGap(18, 18, 18)
+                .addComponent(btnEmpezar)
+                .addGap(18, 18, 18)
+                .addComponent(btnPausar)
+                .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEmpezar)
-                            .addComponent(btnPausar))
-                        .addGap(19, 19, 19)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addComponent(lblindicador)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnContinuar))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnEmpezar)
+                                    .addComponent(btnPausar))))
+                        .addGap(14, 14, 14)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
+                        .addComponent(lblContadorDescansos)
+                        .addGap(18, 18, 18)
                         .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -251,23 +348,35 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEmpezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpezarActionPerformed
-        m = 0;
-        s = 0;
-        cs = 0;
+        if (esDescanso) {
+            if (contDescansos == 5) {
+                setTiempos(TIEMPO_DESCANSO_LARGO);
+            } else {
+                setTiempos(TIEMPO_DESCANSO);
+            }
+        } else {
+            setTiempos(TIEMPO_TRABAJO);
+        }
         t.start();
         btnEmpezar.setEnabled(false);
         btnPausar.setEnabled(true);
+        btnContinuar.setVisible(false);
+        lblindicador.setVisible(false);
     }//GEN-LAST:event_btnEmpezarActionPerformed
 
     private void btnPausarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPausarActionPerformed
         if (banderaPausa) {
             t.stop();
+            timerLB.start();
             btnPausar.setText("Reanudar");
             banderaPausa = false;
         } else {
+            timerLB.stop();
+            lblTiempo.setVisible(true);
             t.restart();
             btnPausar.setText("Pausar");
             banderaPausa = true;
+            timerLB.stop();
         }
     }//GEN-LAST:event_btnPausarActionPerformed
 
@@ -308,6 +417,32 @@ public class FramePrincipal extends javax.swing.JFrame {
         this.cargarTabla();
     }//GEN-LAST:event_Btn_Agregar_TareaActionPerformed
 
+    private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
+        if (!esDescanso) {
+            if (contDescansos < 5) {
+                contDescansos += 1;
+            }
+            banderaYaActivado = false;
+        }
+        actualizaLblContadorDescansos();
+        if (contDescansos == 5) {
+            contDescansos = 0;
+        }
+        esDescanso = !esDescanso;
+        btnEmpezarActionPerformed(null);
+    }//GEN-LAST:event_btnContinuarActionPerformed
+
+    private void actualizaLblContadorDescansos() {
+        switch (contDescansos) {
+            case 4 ->
+                lblContadorDescansos.setText("El siguiente descanso sera largo");
+            case 5 ->
+                lblContadorDescansos.setText("Este es el descanso largo");
+            default ->
+                lblContadorDescansos.setText("Faltan " + (4 - contDescansos) + " descansos para el siguiente descanso largo");
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -346,6 +481,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Btn_Agregar_Tarea;
     private javax.swing.JTable Tabla_Terminada;
+    private javax.swing.JButton btnContinuar;
     private javax.swing.JButton btnEmpezar;
     private javax.swing.JButton btnPausar;
     private javax.swing.JLabel jLabel1;
@@ -353,7 +489,9 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblContadorDescansos;
     private javax.swing.JLabel lblTiempo;
+    private javax.swing.JLabel lblindicador;
     private javax.swing.JTable tblPendientes;
     // End of variables declaration//GEN-END:variables
 }
