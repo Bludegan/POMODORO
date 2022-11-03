@@ -160,8 +160,6 @@ public class FramePrincipal extends javax.swing.JFrame {
         tblPendientes = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         Btn_Agregar_Tarea = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        Tabla_Terminada = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         lblindicador = new javax.swing.JLabel();
         btnContinuar = new javax.swing.JButton();
@@ -170,6 +168,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         tblProgreso = new javax.swing.JTable();
         btnPendienteAProgreso = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        btnPendienteATerminado = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblTerminado = new javax.swing.JTable();
 
         tblPendientes1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -261,34 +262,6 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
-        Tabla_Terminada.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Acitividad"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(Tabla_Terminada);
-
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Tareas Pendientes");
 
@@ -348,52 +321,93 @@ public class FramePrincipal extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Tareas en Progreso");
 
+        btnPendienteATerminado.setText("-->");
+        btnPendienteATerminado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPendienteATerminadoActionPerformed(evt);
+            }
+        });
+
+        tblTerminado.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Actividad"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tblTerminado);
+        if (tblTerminado.getColumnModel().getColumnCount() > 0) {
+            tblTerminado.getColumnModel().getColumn(0).setResizable(false);
+        }
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblContadorDescansos, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(105, 105, 105)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(94, 94, 94)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblindicador, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnContinuar))
-                        .addGap(31, 31, 31)
-                        .addComponent(lblTiempo)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEmpezar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPausar)
-                        .addGap(20, 20, 20))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnPendienteAProgreso)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblContadorDescansos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
+                                    .addComponent(lblindicador, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnContinuar))
+                                .addGap(31, 31, 31)
+                                .addComponent(lblTiempo))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnPendienteAProgreso)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnPendienteATerminado, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnEmpezar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPausar)
+                                .addGap(20, 20, 20))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(62, 62, 62))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(165, 165, 165)))
-                .addComponent(jLabel1)
-                .addGap(94, 94, 94))
+                        .addGap(155, 155, 155)
+                        .addComponent(jLabel1)
+                        .addGap(104, 104, 104))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -421,11 +435,14 @@ public class FramePrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2))
-                .addGap(18, 18, 18)
-                .addComponent(btnPendienteAProgreso)
+                    .addComponent(jScrollPane5)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPendienteAProgreso)
+                    .addComponent(btnPendienteATerminado))
                 .addGap(65, 65, 65))
         );
 
@@ -477,9 +494,13 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPausarActionPerformed
 
     public void cargarTabla() {
+        
         this.PendienteControl.crearConexion();
         List<Actividades> list = this.PendienteControl.consultar();
         System.out.println(list);
+        //--------------------------------
+        // CARGA TABLA EN PEDIENTES
+        //--------------------------------
         DefaultTableModel model = (DefaultTableModel) tblPendientes.getModel();
         model.setRowCount(0);
         list.forEach(pendiente -> {
@@ -495,6 +516,16 @@ public class FramePrincipal extends javax.swing.JFrame {
         list.forEach(pendiente -> {
             if (pendiente.getEstado().equals("progreso")) {
                 modelProgreso.addRow(new Object[]{pendiente});
+            }
+        });
+        //--------------------------------
+        // CARGA TABLA EN TERMINADO
+        //--------------------------------
+        DefaultTableModel modelTerminada = (DefaultTableModel) tblTerminado.getModel();
+        modelTerminada.setRowCount(0);
+        list.forEach(pendiente -> {
+            if (pendiente.getEstado().equals("terminado")) {
+                modelTerminada.addRow(new Object[]{pendiente});
             }
         });
         
@@ -542,13 +573,29 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnPendienteAProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendienteAProgresoActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere realizar esta actividad", "info", JOptionPane.YES_NO_OPTION);
+        if(opcion == JOptionPane.YES_OPTION){
         DefaultTableModel dtmPendiente = (DefaultTableModel) tblPendientes.getModel();
         Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblPendientes.getSelectedRow(), 0);
         tareaPendiente.setEstado("progreso");
         this.PendienteControl.modificar(tareaPendiente);
         this.cargarTabla();
-        btnEmpezar.setEnabled(true);
+        btnEmpezar.setEnabled(true);    
+        }
     }//GEN-LAST:event_btnPendienteAProgresoActionPerformed
+
+    private void btnPendienteATerminadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendienteATerminadoActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere terminar esta actividad", "info", JOptionPane.YES_NO_OPTION);
+        if(opcion == JOptionPane.YES_OPTION){
+        DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
+        Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
+        tareaPendiente.setEstado("terminado");
+        this.PendienteControl.modificar(tareaPendiente);
+        this.cargarTabla();
+        JOptionPane.showMessageDialog(rootPane, "La actividad se termino con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
+        btnEmpezar.setEnabled(true);    
+        }
+    }//GEN-LAST:event_btnPendienteATerminadoActionPerformed
 
     private void actualizaLblContadorDescansos() {
         switch (contDescansos) {
@@ -598,24 +645,25 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Btn_Agregar_Tarea;
-    private javax.swing.JTable Tabla_Terminada;
     private javax.swing.JButton btnContinuar;
     private javax.swing.JButton btnEmpezar;
     private javax.swing.JButton btnPausar;
     private javax.swing.JButton btnPendienteAProgreso;
+    private javax.swing.JButton btnPendienteATerminado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lblContadorDescansos;
     private javax.swing.JLabel lblTiempo;
     private javax.swing.JLabel lblindicador;
     private javax.swing.JTable tblPendientes;
     private javax.swing.JTable tblPendientes1;
     private javax.swing.JTable tblProgreso;
+    private javax.swing.JTable tblTerminado;
     // End of variables declaration//GEN-END:variables
 }

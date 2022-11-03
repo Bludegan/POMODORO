@@ -31,8 +31,11 @@ public class PendientesDAO extends BaseDAO<Actividades> {
 
     @Override
     public void agregar(Actividades actividad) {
+        Actividades Estado_Actividad = new Actividades();
+        Estado_Actividad.setEstado("pendiente");
         BasicDBObject documento = new BasicDBObject();
         documento.put("nombre", actividad.getNombre_Tarea());
+        documento.put("estado", Estado_Actividad.getEstado());
         collection.insert(documento);
     }
 
