@@ -22,6 +22,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private final int TIEMPO_DESCANSO = 1;
     private final int TIEMPO_TRABAJO = 2;
     private final int TIEMPO_DESCANSO_LARGO = 3;
+    private final int TIEMPO_PURO_CERO = 4;
     PendientesDAO PendienteControl = new PendientesDAO();
 
     /**
@@ -33,10 +34,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         lblindicador.setVisible(false);
         btnContinuar.setVisible(false);
         btnPausar.setEnabled(false);
-        btnEmpezar.setEnabled(checaProgreso());
-        t = new Timer(10, acciones);
+        t = new Timer(1, acciones);
         timerLB = new Timer(500, accionesLblParpadeante);
         this.cargarTabla();
+        btnEmpezar.setEnabled(checaProgreso());
         actualizarLabel();
         actualizaLblContadorDescansos();
     }
@@ -49,7 +50,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     private Timer timerLB;
     private int m, s, cs;
     private int contParpadeante;
-    private boolean banderaYaActivado;
 
     private ActionListener acciones = new ActionListener() {
         @Override
@@ -87,28 +87,33 @@ public class FramePrincipal extends javax.swing.JFrame {
             actualizarLabel();
         }
     };
-    
+
     private boolean checaProgreso() {
-        return tblProgreso.getRowCount() > 0;
+        return tblProgreso.getModel().getRowCount() > 0;
     }
 
     private void setTiempos(int tipo) {
         switch (tipo) {
-            case TIEMPO_DESCANSO:
+            case TIEMPO_DESCANSO -> {
                 m = 0;
                 s = 10;
                 cs = 0;
-                break;
-            case TIEMPO_TRABAJO:
+            }
+            case TIEMPO_TRABAJO -> {
                 m = 0;
                 s = 20;
                 cs = 0;
-                break;
-            case TIEMPO_DESCANSO_LARGO:
+            }
+            case TIEMPO_DESCANSO_LARGO -> {
                 m = 0;
                 s = 15;
                 cs = 0;
-                break;
+            }
+            case TIEMPO_PURO_CERO -> {
+                m = 0;
+                s = 0;
+                cs = 0;
+            }
         }
     }
 
@@ -138,8 +143,6 @@ public class FramePrincipal extends javax.swing.JFrame {
             contParpadeante++;
         }
     };
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -489,12 +492,10 @@ public class FramePrincipal extends javax.swing.JFrame {
             t.restart();
             btnPausar.setText("Pausar");
             banderaPausa = true;
-            timerLB.stop();
         }
     }//GEN-LAST:event_btnPausarActionPerformed
 
     public void cargarTabla() {
-        
         this.PendienteControl.crearConexion();
         List<Actividades> list = this.PendienteControl.consultar();
         System.out.println(list);
@@ -528,13 +529,11 @@ public class FramePrincipal extends javax.swing.JFrame {
                 modelTerminada.addRow(new Object[]{pendiente});
             }
         });
-        
     }
 
     private void Btn_Agregar_TareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_Agregar_TareaActionPerformed
 //        Frm_Agregar panel = new Frm_Agregar();
 //        panel.setVisible(true);
-
         String actividad = JOptionPane.showInputDialog(rootPane, "Tarea", "Agregar", JOptionPane.QUESTION_MESSAGE);
         if (actividad != null) {
             List<Actividades> list = this.PendienteControl.consultar();
@@ -546,7 +545,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "Logitud mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            Actividades New_actividad = new Actividades(actividad);
+            Actividades New_actividad = new Actividades(actividad, "pendiente");
             if (list.contains(New_actividad)) {
                 JOptionPane.showMessageDialog(rootPane, "La actividad ya existe", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -562,7 +561,6 @@ public class FramePrincipal extends javax.swing.JFrame {
             if (contDescansos < 5) {
                 contDescansos += 1;
             }
-            banderaYaActivado = false;
         }
         actualizaLblContadorDescansos();
         if (contDescansos == 5) {
@@ -574,29 +572,41 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void btnPendienteAProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendienteAProgresoActionPerformed
         int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere realizar esta actividad", "info", JOptionPane.YES_NO_OPTION);
-        if(opcion == JOptionPane.YES_OPTION){
-        DefaultTableModel dtmPendiente = (DefaultTableModel) tblPendientes.getModel();
-        Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblPendientes.getSelectedRow(), 0);
-        tareaPendiente.setEstado("progreso");
-        this.PendienteControl.modificar(tareaPendiente);
-        this.cargarTabla();
-        btnEmpezar.setEnabled(true);    
+        if (opcion == JOptionPane.YES_OPTION) {
+            DefaultTableModel dtmPendiente = (DefaultTableModel) tblPendientes.getModel();
+            Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblPendientes.getSelectedRow(), 0);
+            tareaPendiente.setEstado("progreso");
+            this.PendienteControl.modificar(tareaPendiente);
+            this.cargarTabla();
+            btnEmpezar.setEnabled(checaProgreso());
         }
     }//GEN-LAST:event_btnPendienteAProgresoActionPerformed
 
     private void btnPendienteATerminadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendienteATerminadoActionPerformed
         int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere terminar esta actividad", "info", JOptionPane.YES_NO_OPTION);
-        if(opcion == JOptionPane.YES_OPTION){
-        DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
-        Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
-        tareaPendiente.setEstado("terminado");
-        this.PendienteControl.modificar(tareaPendiente);
-        this.cargarTabla();
-        JOptionPane.showMessageDialog(rootPane, "La actividad se termino con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
-        btnEmpezar.setEnabled(true);    
+        if (opcion == JOptionPane.YES_OPTION) {
+            DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
+            Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
+            tareaPendiente.setEstado("terminado");
+            this.PendienteControl.modificar(tareaPendiente);
+            this.cargarTabla();
+            btnEmpezar.setEnabled(checaProgreso());
+            if (!checaProgreso()) {
+                resetearTodoTimer();
+            }
+            JOptionPane.showMessageDialog(rootPane, "La actividad se termino con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnPendienteATerminadoActionPerformed
 
+    private void resetearTodoTimer() {
+        System.out.println("Si entro master");
+        t.stop();
+        contDescansos = 0;
+        setTiempos(TIEMPO_PURO_CERO);
+        actualizarLabel();
+        actualizaLblContadorDescansos();
+    }
+    
     private void actualizaLblContadorDescansos() {
         switch (contDescansos) {
             case 4 ->
