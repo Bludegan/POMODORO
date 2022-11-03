@@ -22,31 +22,9 @@ public abstract class BaseDAO<Actividad> {
         
     }
     
-//    private  final String SERVER= "localhost";
-//    private  final int PORT= 27017;
-//    private  final String DB= "Pomodoro";
-//         protected MongoDatabase getDatabase(){
-//         try {
-//            CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
-//            CodecRegistry codecRegistry = 
-//                    fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-//                    pojoCodecRegistry);
-//            ConnectionString cadenaConexion = new ConnectionString("mongodb://"+SERVER+"/"+PORT);
-//            MongoClientSettings clientSettings = MongoClientSettings.builder()
-//                    .applyConnectionString(cadenaConexion)
-//                    .codecRegistry(codecRegistry)
-//                    .build();
-//            MongoClient clienteMongo = MongoClients.create(clientSettings);
-//            MongoDatabase baseDatos = clienteMongo.getDatabase(DB);
-//            return  baseDatos;
-//        } catch (Exception ex) {
-//            System.err.println(ex);
-//            throw ex;
-//        }
-//    }
-    
      public abstract void agregar(Actividad actividad);
      public abstract ArrayList<Actividad> consultar();
      public abstract void crearConexion();
+     public abstract void modificar(Actividad actividad);
 
 }

@@ -26,7 +26,7 @@ public class PendientesDAO extends BaseDAO<Actividades> {
     DBCollection collection;
 
     public PendientesDAO() {
-      this.crearConexion();
+        this.crearConexion();
     }
 
     @Override
@@ -37,21 +37,31 @@ public class PendientesDAO extends BaseDAO<Actividades> {
     }
 
     @Override
-    public ArrayList<Actividades> consultar(){
+    public ArrayList<Actividades> consultar() {
         ArrayList<Actividades> ListaActividad = new ArrayList<>();
         DBCursor cursor = collection.find();
         while (cursor.hasNext()) {
             DBObject obj = cursor.next();
             ListaActividad.add(
-                    new Actividades((String) obj.get("nombre"))
+                new Actividades((String) obj.get("nombre"), (String) obj.get("estado"))
             );
         }
         return ListaActividad;
     }
+    
+    @Override
+    public void modificar(Actividades actividades) {
+        DBObject resultado = collection.findOne(new BasicDBObject("nombre", actividades.getNombre_Tarea()));
+        if (resultado != null) {
+            BasicDBObject estadoNuevo = new BasicDBObject("estado", actividades.getEstado());
+            BasicDBObject operacion = new BasicDBObject("$set", estadoNuevo);
+            collection.update(resultado, operacion);
+        }
+    }
 
     @Override
     public void crearConexion() {
-           MongoClient mongo = null;
+        MongoClient mongo = null;
         try {
             mongo = new MongoClient("localhost", 27017);
             System.out.println("Connected to the database successfully");

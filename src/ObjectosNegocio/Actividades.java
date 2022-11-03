@@ -10,11 +10,17 @@ import java.util.Objects;
 
 public class Actividades {
     public String Nombre_Tarea;
+    public String estado;
 
     public Actividades() {
     }
     public Actividades(String Nombre_Tarea) {
         this.Nombre_Tarea = Nombre_Tarea;
+    }
+    
+    public Actividades(String Nombre_Tarea, String estado) {
+        this.Nombre_Tarea = Nombre_Tarea;
+        this.estado = estado;
     }
 
     public String getNombre_Tarea() {
@@ -23,6 +29,14 @@ public class Actividades {
 
     public void setNombre_Tarea(String Nombre_Tarea) {
         this.Nombre_Tarea = Nombre_Tarea;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     @Override
@@ -50,7 +64,7 @@ public class Actividades {
 
     @Override
     public String toString() {
-        return Nombre_Tarea ;
+        return Nombre_Tarea;
     }
 }
 
