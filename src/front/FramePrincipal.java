@@ -38,13 +38,14 @@ public class FramePrincipal extends javax.swing.JFrame {
         timerLB = new Timer(500, accionesLblParpadeante);
         this.cargarTabla();
         btnEmpezar.setEnabled(checaProgreso());
-        actualizarLabel();
+        btnRestablecer.setEnabled(false);
+        actualizaValoresTiempos();
+        actualizarLabelTiempo();
         actualizaLblContadorDescansos();
     }
 
     private boolean esDescanso = false;
     private byte contDescansos = 0;
-    private boolean parpadea = false;
     private boolean banderaPausa = true;
     private Timer t;
     private Timer timerLB;
@@ -84,7 +85,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             if (s <= 5) {
                 mostrarIndicador();
             }
-            actualizarLabel();
+            actualizarLabelTiempo();
         }
     };
 
@@ -127,9 +128,45 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
     }
 
-    private void actualizarLabel() {
+    private void ocultarIndicador() {
+        lblindicador.setVisible(false);
+        btnContinuar.setVisible(false);
+    }
+
+    private void actualizarLabelTiempo() {
         String tiempo = (m <= 9 ? "0" : "") + m + ":" + (s <= 9 ? "0" : "") + s + ":" + (cs <= 9 ? "0" : "") + cs;
         lblTiempo.setText(tiempo);
+    }
+
+    public void actualizaValoresTiempos() {
+        if (esDescanso) {
+            if (contDescansos == 5) {
+                setTiempos(TIEMPO_DESCANSO_LARGO);
+            } else {
+                setTiempos(TIEMPO_DESCANSO);
+            }
+        } else {
+            setTiempos(TIEMPO_TRABAJO);
+        }
+    }
+
+    public void restableceTiempo() {
+        esDescanso = false;
+        banderaPausa = true;
+        contDescansos = 0;
+        actualizaValoresTiempos();
+        actualizarLabelTiempo();
+        actualizaLblContadorDescansos();
+        btnEmpezar.setEnabled(true);
+        btnPausar.setEnabled(false);
+        btnRestablecer.setEnabled(false);
+        ocultarIndicador();
+        if (timerLB.isRunning()) {
+            timerLB.stop();
+            lblTiempo.setVisible(true);
+            btnPausar.setText("Pausar");
+            banderaPausa = true;
+        }
     }
 
     private ActionListener accionesLblParpadeante = new ActionListener() {
@@ -174,6 +211,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnPendienteATerminado = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblTerminado = new javax.swing.JTable();
+        btnRestablecer = new javax.swing.JButton();
 
         tblPendientes1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -206,9 +244,12 @@ public class FramePrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         lblTiempo.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblTiempo.setText("00:00:00");
         lblTiempo.setToolTipText("");
+        jPanel1.add(lblTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 18, -1, 54));
 
         btnEmpezar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         btnEmpezar.setText("Empezar");
@@ -217,6 +258,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnEmpezarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnEmpezar, new org.netbeans.lib.awtextra.AbsoluteConstraints(692, 18, -1, -1));
 
         btnPausar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         btnPausar.setText("Pausar");
@@ -225,6 +267,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnPausarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnPausar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 20, -1, -1));
 
         tblPendientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -254,8 +297,11 @@ public class FramePrincipal extends javax.swing.JFrame {
             tblPendientes.getColumnModel().getColumn(0).setResizable(false);
         }
 
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(105, 189, 227, -1));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Tareas Terminada");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(783, 158, -1, -1));
 
         Btn_Agregar_Tarea.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Btn_Agregar_Tarea.setText("Agregar Tarea");
@@ -264,13 +310,16 @@ public class FramePrincipal extends javax.swing.JFrame {
                 Btn_Agregar_TareaActionPerformed(evt);
             }
         });
+        jPanel1.add(Btn_Agregar_Tarea, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 52, 221, 54));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Tareas Pendientes");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 158, -1, -1));
 
         lblindicador.setForeground(new java.awt.Color(255, 51, 51));
         lblindicador.setText("INDICADOR");
         lblindicador.setToolTipText("");
+        jPanel1.add(lblindicador, new org.netbeans.lib.awtextra.AbsoluteConstraints(294, 52, 175, -1));
 
         btnContinuar.setText("Continuar");
         btnContinuar.addActionListener(new java.awt.event.ActionListener() {
@@ -278,8 +327,10 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnContinuarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnContinuar, new org.netbeans.lib.awtextra.AbsoluteConstraints(294, 86, -1, -1));
 
         lblContadorDescansos.setText("Contador de Descansos");
+        jPanel1.add(lblContadorDescansos, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 18, 276, -1));
 
         jScrollPane4.setPreferredSize(new java.awt.Dimension(452, 402));
 
@@ -314,15 +365,19 @@ public class FramePrincipal extends javax.swing.JFrame {
             tblProgreso.getColumnModel().getColumn(0).setResizable(false);
         }
 
+        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(447, 189, 227, 427));
+
         btnPendienteAProgreso.setText("-->");
         btnPendienteAProgreso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPendienteAProgresoActionPerformed(evt);
             }
         });
+        jPanel1.add(btnPendienteAProgreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 622, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Tareas en Progreso");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(473, 158, -1, -1));
 
         btnPendienteATerminado.setText("-->");
         btnPendienteATerminado.addActionListener(new java.awt.event.ActionListener() {
@@ -330,6 +385,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnPendienteATerminadoActionPerformed(evt);
             }
         });
+        jPanel1.add(btnPendienteATerminado, new org.netbeans.lib.awtextra.AbsoluteConstraints(602, 622, -1, -1));
 
         tblTerminado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -362,98 +418,24 @@ public class FramePrincipal extends javax.swing.JFrame {
             tblTerminado.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblContadorDescansos, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(105, 105, 105)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblindicador, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnContinuar))
-                                .addGap(31, 31, 31)
-                                .addComponent(lblTiempo))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnPendienteAProgreso)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnPendienteATerminado, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnEmpezar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnPausar)
-                                .addGap(20, 20, 20))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(62, 62, 62))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(155, 155, 155)
-                        .addComponent(jLabel1)
-                        .addGap(104, 104, 104))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(lblindicador)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnContinuar))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(lblTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnEmpezar)
-                            .addComponent(btnPausar)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblContadorDescansos)
-                        .addGap(18, 18, 18)
-                        .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(50, 50, 50)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane5)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPendienteAProgreso)
-                    .addComponent(btnPendienteATerminado))
-                .addGap(65, 65, 65))
-        );
+        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(743, 189, 227, -1));
+
+        btnRestablecer.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        btnRestablecer.setText("Restablece");
+        btnRestablecer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestablecerActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnRestablecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 80, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1061, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -464,18 +446,11 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEmpezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpezarActionPerformed
-        if (esDescanso) {
-            if (contDescansos == 5) {
-                setTiempos(TIEMPO_DESCANSO_LARGO);
-            } else {
-                setTiempos(TIEMPO_DESCANSO);
-            }
-        } else {
-            setTiempos(TIEMPO_TRABAJO);
-        }
+        actualizaValoresTiempos();
         t.start();
         btnEmpezar.setEnabled(false);
         btnPausar.setEnabled(true);
+        btnRestablecer.setEnabled(true);
         btnContinuar.setVisible(false);
         lblindicador.setVisible(false);
     }//GEN-LAST:event_btnEmpezarActionPerformed
@@ -598,15 +573,23 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPendienteATerminadoActionPerformed
 
+    private void btnRestablecerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestablecerActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere restablecer el tiempo?", "info", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
+            t.stop();
+            restableceTiempo();
+        }
+    }//GEN-LAST:event_btnRestablecerActionPerformed
+
     private void resetearTodoTimer() {
         System.out.println("Si entro master");
         t.stop();
         contDescansos = 0;
         setTiempos(TIEMPO_PURO_CERO);
-        actualizarLabel();
+        actualizarLabelTiempo();
         actualizaLblContadorDescansos();
     }
-    
+
     private void actualizaLblContadorDescansos() {
         switch (contDescansos) {
             case 4 ->
@@ -660,6 +643,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnPausar;
     private javax.swing.JButton btnPendienteAProgreso;
     private javax.swing.JButton btnPendienteATerminado;
+    private javax.swing.JButton btnRestablecer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
