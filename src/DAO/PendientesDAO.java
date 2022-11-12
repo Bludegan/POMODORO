@@ -13,6 +13,8 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,18 +26,16 @@ public class PendientesDAO extends BaseDAO<Actividades> {
     //Clase PendientesDAO
     DB database;
     DBCollection collection;
-
     public PendientesDAO() {
         this.crearConexion();
     }
 
     @Override
     public void agregar(Actividades actividad) {
-        Actividades Estado_Actividad = new Actividades();
-        Estado_Actividad.setEstado("pendiente");
         BasicDBObject documento = new BasicDBObject();
         documento.put("nombre", actividad.getNombre_Tarea());
-        documento.put("estado", Estado_Actividad.getEstado());
+        documento.put("estado", actividad.getEstado());
+        documento.put("fechaterminacion",actividad.getFechaterminacion());
         collection.insert(documento);
     }
 
@@ -46,7 +46,7 @@ public class PendientesDAO extends BaseDAO<Actividades> {
         while (cursor.hasNext()) {
             DBObject obj = cursor.next();
             ListaActividad.add(
-                new Actividades((String) obj.get("nombre"), (String) obj.get("estado"))
+                new Actividades((String) obj.get("nombre"), (String) obj.get("estado"), (Date) obj.get("fechaterminacion"))
             );
         }
         return ListaActividad;

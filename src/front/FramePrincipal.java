@@ -11,6 +11,10 @@ import javax.swing.Timer;
 import ObjectosNegocio.Actividades;
 import javax.swing.table.DefaultTableModel;
 import DAO.PendientesDAO;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -212,6 +216,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         tblTerminado = new javax.swing.JTable();
         btnRestablecer = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         tblPendientes1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -297,11 +302,11 @@ public class FramePrincipal extends javax.swing.JFrame {
             tblPendientes.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(105, 189, 227, -1));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 320, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Tareas Terminada");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(783, 158, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 170, -1, -1));
 
         Btn_Agregar_Tarea.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Btn_Agregar_Tarea.setText("Agregar Tarea");
@@ -314,7 +319,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Tareas Pendientes");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 158, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, -1, -1));
 
         lblindicador.setForeground(new java.awt.Color(255, 51, 51));
         lblindicador.setText("INDICADOR");
@@ -365,7 +370,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             tblProgreso.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(447, 189, 227, 427));
+        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 200, 330, 427));
 
         btnPendienteAProgreso.setText("-->");
         btnPendienteAProgreso.addActionListener(new java.awt.event.ActionListener() {
@@ -373,11 +378,11 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnPendienteAProgresoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPendienteAProgreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 622, -1, -1));
+        jPanel1.add(btnPendienteAProgreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 640, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Tareas en Progreso");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(473, 158, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 170, -1, -1));
 
         btnPendienteATerminado.setText("-->");
         btnPendienteATerminado.addActionListener(new java.awt.event.ActionListener() {
@@ -385,24 +390,24 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnPendienteATerminadoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPendienteATerminado, new org.netbeans.lib.awtextra.AbsoluteConstraints(602, 622, -1, -1));
+        jPanel1.add(btnPendienteATerminado, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 640, -1, -1));
 
         tblTerminado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Actividad"
+                "Actividad", "Fecha - Hora"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -414,11 +419,8 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
         jScrollPane5.setViewportView(tblTerminado);
-        if (tblTerminado.getColumnModel().getColumnCount() > 0) {
-            tblTerminado.getColumnModel().getColumn(0).setResizable(false);
-        }
 
-        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(743, 189, 227, -1));
+        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 200, 330, -1));
 
         btnRestablecer.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         btnRestablecer.setText("Restablece");
@@ -428,6 +430,14 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnRestablecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 80, -1, -1));
+
+        jButton1.setText("<--");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 640, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -439,7 +449,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
         );
 
         pack();
@@ -474,6 +484,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         this.PendienteControl.crearConexion();
         List<Actividades> list = this.PendienteControl.consultar();
         System.out.println(list);
+        
         //--------------------------------
         // CARGA TABLA EN PEDIENTES
         //--------------------------------
@@ -484,6 +495,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 model.addRow(new Object[]{pendiente});
             }
         });
+        
         //--------------------------------
         // CARGA TABLA EN PROGRESO
         //--------------------------------
@@ -494,21 +506,36 @@ public class FramePrincipal extends javax.swing.JFrame {
                 modelProgreso.addRow(new Object[]{pendiente});
             }
         });
+        
         //--------------------------------
         // CARGA TABLA EN TERMINADO
         //--------------------------------
         DefaultTableModel modelTerminada = (DefaultTableModel) tblTerminado.getModel();
         modelTerminada.setRowCount(0);
-        list.forEach(pendiente -> {
-            if (pendiente.getEstado().equals("terminado")) {
-                modelTerminada.addRow(new Object[]{pendiente});
-            }
+        //Ordenamiento de la lista
+        List<Actividades> terminados = list.stream()
+                .filter(act -> act.getEstado().equals("terminado"))
+                .sorted((c1, c2) -> {
+                    return c2.getFechaterminacion().compareTo(c1.getFechaterminacion());
+                })
+                .toList();
+        terminados.forEach(pendiente -> {
+            //Se modifico para imprimir la fecha
+            modelTerminada.addRow(new Object[]{pendiente, convertirFecha(pendiente.getFechaterminacion())});
         });
+    }
+    
+    //Comvertir la fecha en string
+    public String convertirFecha(Date fecha) {
+        String pattern = "yyyy-MM-dd hh:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        String fechaString = sdf.format(fecha);
+        return fechaString;
     }
 
     private void Btn_Agregar_TareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_Agregar_TareaActionPerformed
-//        Frm_Agregar panel = new Frm_Agregar();
-//        panel.setVisible(true);
+
+        Date fecha = new Date(Calendar.getInstance().getTimeInMillis());
         String actividad = JOptionPane.showInputDialog(rootPane, "Tarea", "Agregar", JOptionPane.QUESTION_MESSAGE);
         if (actividad != null) {
             List<Actividades> list = this.PendienteControl.consultar();
@@ -520,7 +547,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "Logitud mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            Actividades New_actividad = new Actividades(actividad, "pendiente");
+            Actividades New_actividad = new Actividades(actividad, "pendiente", fecha);
             if (list.contains(New_actividad)) {
                 JOptionPane.showMessageDialog(rootPane, "La actividad ya existe", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -559,18 +586,23 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void btnPendienteATerminadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendienteATerminadoActionPerformed
         int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere terminar esta actividad", "info", JOptionPane.YES_NO_OPTION);
-        if (opcion == JOptionPane.YES_OPTION) {
-            DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
-            Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
-            tareaPendiente.setEstado("terminado");
-            this.PendienteControl.modificar(tareaPendiente);
-            this.cargarTabla();
-            btnEmpezar.setEnabled(checaProgreso());
-            if (!checaProgreso()) {
-                resetearTodoTimer();
+        try {
+            if (opcion == JOptionPane.YES_OPTION) {
+                DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
+                Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
+                tareaPendiente.setEstado("terminado");
+                this.PendienteControl.modificar(tareaPendiente);
+                this.cargarTabla();
+                btnEmpezar.setEnabled(checaProgreso());
+                if (!checaProgreso()) {
+                    resetearTodoTimer();
+                }
+                JOptionPane.showMessageDialog(rootPane, "La actividad se termino con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
             }
-            JOptionPane.showMessageDialog(rootPane, "La actividad se termino con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "No sea seleccionado una tarea", "ERROR", JOptionPane.INFORMATION_MESSAGE);
         }
+
     }//GEN-LAST:event_btnPendienteATerminadoActionPerformed
 
     private void btnRestablecerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestablecerActionPerformed
@@ -580,6 +612,28 @@ public class FramePrincipal extends javax.swing.JFrame {
             restableceTiempo();
         }
     }//GEN-LAST:event_btnRestablecerActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere pausar esta actividad?", "info", JOptionPane.YES_NO_OPTION);
+        try {
+            if (opcion == JOptionPane.YES_OPTION) {
+                DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
+                Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
+                tareaPendiente.setEstado("pendiente");
+                this.PendienteControl.modificar(tareaPendiente);
+                this.cargarTabla();
+                btnEmpezar.setEnabled(checaProgreso());
+                if (!checaProgreso()) {
+                    resetearTodoTimer();
+                }
+                JOptionPane.showMessageDialog(rootPane, "La actividad regreso a pendiente con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "No sea seleccionado una tarea", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void resetearTodoTimer() {
         System.out.println("Si entro master");
@@ -644,6 +698,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnPendienteAProgreso;
     private javax.swing.JButton btnPendienteATerminado;
     private javax.swing.JButton btnRestablecer;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

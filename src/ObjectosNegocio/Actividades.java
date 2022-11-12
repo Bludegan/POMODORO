@@ -1,23 +1,32 @@
-
 package ObjectosNegocio;
 
 import java.util.Objects;
+import java.util.Date;
 
 /**
  *
  * @author blude
  */
-
 public class Actividades {
+
     public String Nombre_Tarea;
     public String estado;
+    public Date fechaterminacion;
 
+    //Construtor para agregar el campo fecha
+    public Actividades(String Nombre_Tarea, String estado, Date fechaterminacion) {
+        this.Nombre_Tarea = Nombre_Tarea;
+        this.estado = estado;
+        this.fechaterminacion = fechaterminacion;
+    }  
+    
     public Actividades() {
     }
+
     public Actividades(String Nombre_Tarea) {
         this.Nombre_Tarea = Nombre_Tarea;
     }
-    
+
     public Actividades(String Nombre_Tarea, String estado) {
         this.Nombre_Tarea = Nombre_Tarea;
         this.estado = estado;
@@ -37,6 +46,14 @@ public class Actividades {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Date getFechaterminacion() {
+        return fechaterminacion;
+    }
+
+    public void setFechaterminacion(Date fechaterminacion) {
+        this.fechaterminacion = fechaterminacion;
     }
 
     @Override
@@ -60,12 +77,9 @@ public class Actividades {
         final Actividades other = (Actividades) obj;
         return Objects.equals(this.Nombre_Tarea, other.Nombre_Tarea);
     }
-    
 
     @Override
     public String toString() {
         return Nombre_Tarea;
     }
 }
-
-
