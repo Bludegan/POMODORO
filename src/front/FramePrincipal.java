@@ -43,6 +43,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         this.cargarTabla();
         btnEmpezar.setEnabled(checaProgreso());
         btnRestablecer.setEnabled(false);
+        btnOmitir.setVisible(false);
         actualizaValoresTiempos();
         actualizarLabelTiempo();
         actualizaLblContadorDescansos();
@@ -126,6 +127,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         if (s == 0 && m == 0 && cs == 0) {
             lblindicador.setText("Se ha acabado el tiempo");
             btnContinuar.setVisible(true);
+            if (!esDescanso) {
+                btnOmitir.setVisible(true);
+            }
         } else {
             lblindicador.setVisible(true);
             lblindicador.setText("Faltan " + s + " segundos para acabar");
@@ -142,7 +146,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         lblTiempo.setText(tiempo);
     }
 
-    public void actualizaValoresTiempos() {
+    private void actualizaValoresTiempos() {
         if (esDescanso) {
             if (contDescansos == 5) {
                 setTiempos(TIEMPO_DESCANSO_LARGO);
@@ -154,7 +158,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
     }
 
-    public void restableceTiempo() {
+    private void restableceTiempo() {
         esDescanso = false;
         banderaPausa = true;
         contDescansos = 0;
@@ -171,6 +175,19 @@ public class FramePrincipal extends javax.swing.JFrame {
             btnPausar.setText("Pausar");
             banderaPausa = true;
         }
+    }
+    
+    private void omitirDescanso() {
+        if (!esDescanso) {
+            if (contDescansos < 5) {
+                contDescansos += 1;
+            }
+        }
+        actualizaLblContadorDescansos();
+        if (contDescansos == 5) {
+            contDescansos = 0;
+        }
+        btnEmpezarActionPerformed(null);
     }
 
     private ActionListener accionesLblParpadeante = new ActionListener() {
@@ -217,6 +234,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         tblTerminado = new javax.swing.JTable();
         btnRestablecer = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        btnOmitir = new javax.swing.JButton();
 
         tblPendientes1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -429,7 +447,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnRestablecerActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRestablecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 80, -1, -1));
+        jPanel1.add(btnRestablecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 80, -1, -1));
 
         jButton1.setText("<--");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -438,6 +456,15 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 640, -1, -1));
+
+        btnOmitir.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        btnOmitir.setText("Omitir");
+        btnOmitir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOmitirActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnOmitir, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 80, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -462,6 +489,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnPausar.setEnabled(true);
         btnRestablecer.setEnabled(true);
         btnContinuar.setVisible(false);
+        btnOmitir.setVisible(false);
         lblindicador.setVisible(false);
     }//GEN-LAST:event_btnEmpezarActionPerformed
 
@@ -635,8 +663,14 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnOmitirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOmitirActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere omitir el descanso que sigue y pasar directamente al siguiente pomodoro?", "info", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
+            omitirDescanso();
+        }
+    }//GEN-LAST:event_btnOmitirActionPerformed
+
     private void resetearTodoTimer() {
-        System.out.println("Si entro master");
         t.stop();
         contDescansos = 0;
         setTiempos(TIEMPO_PURO_CERO);
@@ -694,6 +728,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JButton Btn_Agregar_Tarea;
     private javax.swing.JButton btnContinuar;
     private javax.swing.JButton btnEmpezar;
+    private javax.swing.JButton btnOmitir;
     private javax.swing.JButton btnPausar;
     private javax.swing.JButton btnPendienteAProgreso;
     private javax.swing.JButton btnPendienteATerminado;
