@@ -16,6 +16,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  *
@@ -179,7 +181,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             banderaPausa = true;
         }
     }
-    
+
     private void omitirDescanso() {
         if (!esDescanso) {
             if (contPomodoros < 5) {
@@ -515,7 +517,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         this.PendienteControl.crearConexion();
         List<Actividades> list = this.PendienteControl.consultar();
         System.out.println(list);
-        
+
         //--------------------------------
         // CARGA TABLA EN PEDIENTES
         //--------------------------------
@@ -526,7 +528,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 model.addRow(new Object[]{pendiente});
             }
         });
-        
+
         //--------------------------------
         // CARGA TABLA EN PROGRESO
         //--------------------------------
@@ -537,7 +539,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 modelProgreso.addRow(new Object[]{pendiente});
             }
         });
-        
+
         //--------------------------------
         // CARGA TABLA EN TERMINADO
         //--------------------------------
@@ -555,7 +557,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             modelTerminada.addRow(new Object[]{pendiente, convertirFecha(pendiente.getFechaterminacion())});
         });
     }
-    
+
     //Comvertir la fecha en string
     public String convertirFecha(Date fecha) {
         String pattern = "yyyy-MM-dd hh:mm";
@@ -606,15 +608,18 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void btnPendienteAProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendienteAProgresoActionPerformed
         int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere realizar esta actividad", "info", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
-            DefaultTableModel dtmPendiente = (DefaultTableModel) tblPendientes.getModel();
-            Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblPendientes.getSelectedRow(), 0);
-            tareaPendiente.setEstado("progreso");
-            this.PendienteControl.modificar(tareaPendiente);
-            this.cargarTabla();
-            if (!timerLB.isRunning() && !t.isRunning()) {
-                btnEmpezar.setEnabled(checaProgreso());
-            } else {
-                btnEmpezar.setEnabled(false);
+            try {
+                DefaultTableModel dtmPendiente = (DefaultTableModel) tblPendientes.getModel();
+                Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblPendientes.getSelectedRow(), 0);
+                tareaPendiente.setEstado("progreso");
+                this.PendienteControl.modificar(tareaPendiente);
+                this.cargarTabla();
+                if (!timerLB.isRunning() && !t.isRunning()) {
+                    btnEmpezar.setEnabled(checaProgreso());
+                } else {
+                    btnEmpezar.setEnabled(false);
+                }
+            } catch (Exception e) {
             }
         }
     }//GEN-LAST:event_btnPendienteAProgresoActionPerformed
@@ -626,6 +631,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
                 Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
                 tareaPendiente.setEstado("terminado");
+                tareaPendiente.setFechaterminacion(new Date(Calendar.getInstance().getTimeInMillis()));
+                System.out.println("Fecha nueva: " + tareaPendiente.getFechaterminacion().toString());
                 this.PendienteControl.modificar(tareaPendiente);
                 this.cargarTabla();
                 btnEmpezar.setEnabled(checaProgreso());

@@ -56,8 +56,10 @@ public class PendientesDAO extends BaseDAO<Actividades> {
     public void modificar(Actividades actividades) {
         DBObject resultado = collection.findOne(new BasicDBObject("nombre", actividades.getNombre_Tarea()));
         if (resultado != null) {
-            BasicDBObject estadoNuevo = new BasicDBObject("estado", actividades.getEstado());
-            BasicDBObject operacion = new BasicDBObject("$set", estadoNuevo);
+            BasicDBObject nuevosCampos = new BasicDBObject(); // "estado", actividades.getEstado()
+            nuevosCampos.append("estado", actividades.getEstado());
+            nuevosCampos.append("fechaterminacion", actividades.getFechaterminacion());
+            BasicDBObject operacion = new BasicDBObject("$set", nuevosCampos);
             collection.update(resultado, operacion);
         }
     }
