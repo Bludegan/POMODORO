@@ -611,7 +611,11 @@ public class FramePrincipal extends javax.swing.JFrame {
             tareaPendiente.setEstado("progreso");
             this.PendienteControl.modificar(tareaPendiente);
             this.cargarTabla();
-            btnEmpezar.setEnabled(checaProgreso());
+            if (!timerLB.isRunning() && !t.isRunning()) {
+                btnEmpezar.setEnabled(checaProgreso());
+            } else {
+                btnEmpezar.setEnabled(false);
+            }
         }
     }//GEN-LAST:event_btnPendienteAProgresoActionPerformed
 
