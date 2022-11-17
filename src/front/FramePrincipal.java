@@ -50,7 +50,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     private boolean esDescanso = false;
-    private byte contDescansos = 0;
+    private boolean esDescansoLargo = false;
+    private byte contPomodoros = 0;
     private boolean banderaPausa = true;
     private Timer t;
     private Timer timerLB;
@@ -148,8 +149,10 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void actualizaValoresTiempos() {
         if (esDescanso) {
-            if (contDescansos == 5) {
+            if (esDescansoLargo) {
                 setTiempos(TIEMPO_DESCANSO_LARGO);
+                esDescansoLargo = false;
+                contPomodoros = 0;
             } else {
                 setTiempos(TIEMPO_DESCANSO);
             }
@@ -161,7 +164,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void restableceTiempo() {
         esDescanso = false;
         banderaPausa = true;
-        contDescansos = 0;
+        contPomodoros = 0;
         actualizaValoresTiempos();
         actualizarLabelTiempo();
         actualizaLblContadorDescansos();
@@ -179,14 +182,14 @@ public class FramePrincipal extends javax.swing.JFrame {
     
     private void omitirDescanso() {
         if (!esDescanso) {
-            if (contDescansos < 5) {
-                contDescansos += 1;
+            if (contPomodoros < 5) {
+                contPomodoros += 1;
             }
         }
-        actualizaLblContadorDescansos();
-        if (contDescansos == 5) {
-            contDescansos = 0;
+        if (contPomodoros == 5) {
+            contPomodoros = 0;
         }
+        actualizaLblContadorDescansos();
         btnEmpezarActionPerformed(null);
     }
 
@@ -588,13 +591,13 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
         if (!esDescanso) {
-            if (contDescansos < 5) {
-                contDescansos += 1;
+            if (contPomodoros < 5) {
+                contPomodoros += 1;
             }
         }
         actualizaLblContadorDescansos();
-        if (contDescansos == 5) {
-            contDescansos = 0;
+        if (contPomodoros == 5) {
+            esDescansoLargo = true;
         }
         esDescanso = !esDescanso;
         btnEmpezarActionPerformed(null);
@@ -672,20 +675,20 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void resetearTodoTimer() {
         t.stop();
-        contDescansos = 0;
+        contPomodoros = 0;
         setTiempos(TIEMPO_PURO_CERO);
         actualizarLabelTiempo();
         actualizaLblContadorDescansos();
     }
 
     private void actualizaLblContadorDescansos() {
-        switch (contDescansos) {
+        switch (contPomodoros) {
             case 4 ->
                 lblContadorDescansos.setText("El siguiente descanso sera largo");
             case 5 ->
                 lblContadorDescansos.setText("Este es el descanso largo");
             default ->
-                lblContadorDescansos.setText("Faltan " + (4 - contDescansos) + " descansos para el siguiente descanso largo");
+                lblContadorDescansos.setText("Faltan " + (4 - contPomodoros) + " pomodoros para el siguiente descanso largo");
         }
     }
 
