@@ -13,11 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import DAO.PendientesDAO;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.awt.Toolkit;
 
 /**
  *
@@ -42,6 +40,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnPausar.setEnabled(false);
         t = new Timer(1, acciones);
         timerLB = new Timer(500, accionesLblParpadeante);
+        timerBeep = new Timer(500, accionesBeepTerminacion);
         this.cargarTabla();
         btnEmpezar.setEnabled(checaProgreso());
         btnRestablecer.setEnabled(false);
@@ -57,27 +56,14 @@ public class FramePrincipal extends javax.swing.JFrame {
     private boolean banderaPausa = true;
     private Timer t;
     private Timer timerLB;
+    private Timer timerBeep;
     private int m, s, cs;
     private int contParpadeante;
+    private int contNotificacion;
 
     private ActionListener acciones = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            /*
-            cs++;
-            if (cs == 100) {
-                cs = 0;
-                ++s;
-            }
-            if (s == 60) {
-                s = 0;
-                ++m;
-            }
-            actualizarLabel();
-            if (m == 5) {
-                pararYAvisar();
-            }
-             */
             if (cs > 0) {
                 cs--;
             } else {
@@ -130,6 +116,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         if (s == 0 && m == 0 && cs == 0) {
             lblindicador.setText("Se ha acabado el tiempo");
             btnContinuar.setVisible(true);
+            timerBeep.start();
             if (!esDescanso) {
                 btnOmitir.setVisible(true);
             }
@@ -191,9 +178,20 @@ public class FramePrincipal extends javax.swing.JFrame {
         if (contPomodoros == 5) {
             contPomodoros = 0;
         }
+        timerBeep.stop();
         actualizaLblContadorDescansos();
         btnEmpezarActionPerformed(null);
     }
+    
+    private ActionListener accionesBeepTerminacion = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (contNotificacion % 2 == 0) {
+                Toolkit.getDefaultToolkit().beep();
+            }
+            contNotificacion++;
+        }
+    };
 
     private ActionListener accionesLblParpadeante = new ActionListener() {
         @Override
@@ -592,6 +590,11 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_Btn_Agregar_TareaActionPerformed
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
+        int respuesta = JOptionPane.showConfirmDialog(rootPane, "Seguro que desea apagar la alarma y continuar con el siguiente temporizador?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.NO_OPTION) {
+            return;
+        }
+        timerBeep.stop();
         if (!esDescanso) {
             if (contPomodoros < 5) {
                 contPomodoros += 1;
@@ -632,7 +635,6 @@ public class FramePrincipal extends javax.swing.JFrame {
                 Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
                 tareaPendiente.setEstado("terminado");
                 tareaPendiente.setFechaterminacion(new Date(Calendar.getInstance().getTimeInMillis()));
-                System.out.println("Fecha nueva: " + tareaPendiente.getFechaterminacion().toString());
                 this.PendienteControl.modificar(tareaPendiente);
                 this.cargarTabla();
                 btnEmpezar.setEnabled(checaProgreso());
@@ -651,6 +653,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere restablecer el tiempo?", "info", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
             t.stop();
+            timerBeep.stop();
+            timerLB.stop();
             restableceTiempo();
         }
     }//GEN-LAST:event_btnRestablecerActionPerformed
