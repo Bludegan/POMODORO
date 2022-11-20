@@ -26,5 +26,6 @@ public abstract class BaseDAO<Actividad> {
      public abstract ArrayList<Actividad> consultar();
      public abstract void crearConexion();
      public abstract void modificar(Actividad actividad);
+     public abstract void Eliminar(Actividad actividad);
 
 }

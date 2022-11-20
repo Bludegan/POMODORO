@@ -26,6 +26,7 @@ public class PendientesDAO extends BaseDAO<Actividades> {
     //Clase PendientesDAO
     DB database;
     DBCollection collection;
+
     public PendientesDAO() {
         this.crearConexion();
     }
@@ -35,7 +36,7 @@ public class PendientesDAO extends BaseDAO<Actividades> {
         BasicDBObject documento = new BasicDBObject();
         documento.put("nombre", actividad.getNombre_Tarea());
         documento.put("estado", actividad.getEstado());
-        documento.put("fechaterminacion",actividad.getFechaterminacion());
+        documento.put("fechaterminacion", actividad.getFechaterminacion());
         collection.insert(documento);
     }
 
@@ -46,12 +47,12 @@ public class PendientesDAO extends BaseDAO<Actividades> {
         while (cursor.hasNext()) {
             DBObject obj = cursor.next();
             ListaActividad.add(
-                new Actividades((String) obj.get("nombre"), (String) obj.get("estado"), (Date) obj.get("fechaterminacion"))
+                    new Actividades((String) obj.get("nombre"), (String) obj.get("estado"), (Date) obj.get("fechaterminacion"))
             );
         }
         return ListaActividad;
     }
-    
+
     @Override
     public void modificar(Actividades actividades) {
         DBObject resultado = collection.findOne(new BasicDBObject("nombre", actividades.getNombre_Tarea()));
@@ -77,5 +78,13 @@ public class PendientesDAO extends BaseDAO<Actividades> {
 
         }
 
+    }
+
+    @Override
+    public void Eliminar(Actividades actividad) {
+        DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("nombre", actividad.getNombre_Tarea()));
+        if (buscar != null) {
+            collection.remove(buscar);
+        }
     }
 }

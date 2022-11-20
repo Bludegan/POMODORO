@@ -157,7 +157,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         actualizaValoresTiempos();
         actualizarLabelTiempo();
         actualizaLblContadorDescansos();
-        btnEmpezar.setEnabled(true);
+        btnEmpezar.setEnabled(checaProgreso());
         btnPausar.setEnabled(false);
         btnRestablecer.setEnabled(false);
         ocultarIndicador();
@@ -182,7 +182,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         actualizaLblContadorDescansos();
         btnEmpezarActionPerformed(null);
     }
-    
+
     private ActionListener accionesBeepTerminacion = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -204,6 +204,42 @@ public class FramePrincipal extends javax.swing.JFrame {
             contParpadeante++;
         }
     };
+
+    public void EliminarPendientes() {
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere realizar esta actividad", "info", JOptionPane.YES_NO_OPTION);
+        try {
+            if (opcion == JOptionPane.YES_OPTION) {
+                DefaultTableModel dtmPendiente = (DefaultTableModel) tblPendientes.getModel();
+                Actividades tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblPendientes.getSelectedRow(), 0);
+                if (tareaPendiente != null) {
+                    this.PendienteControl.Eliminar(tareaPendiente);
+                    JOptionPane.showMessageDialog(this, "La tarea se eliminó con exito.,",
+                            "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+                    this.cargarTabla();
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "No sea seleccionado una tarea", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void EliminarProgreso() {
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere realizar esta actividad", "info", JOptionPane.YES_NO_OPTION);
+        try {
+            if (opcion == JOptionPane.YES_OPTION) {
+                DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
+                Actividades tareaProgreso = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
+                if (tareaProgreso != null) {
+                    this.PendienteControl.Eliminar(tareaProgreso);
+                    JOptionPane.showMessageDialog(this, "La tarea se eliminó con exito.,",
+                            "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+                    this.cargarTabla();
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "No sea seleccionado una tarea", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -238,6 +274,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnRestablecer = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         btnOmitir = new javax.swing.JButton();
+        btn_eliminar1 = new javax.swing.JButton();
+        btn_eliminar2 = new javax.swing.JButton();
 
         tblPendientes1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -469,6 +507,22 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(btnOmitir, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 80, -1, -1));
 
+        btn_eliminar1.setText("Eliminar  Pendiente");
+        btn_eliminar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminar1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_eliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 640, -1, -1));
+
+        btn_eliminar2.setText("Eliminar  Progreso");
+        btn_eliminar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminar2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_eliminar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 640, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -688,6 +742,21 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnOmitirActionPerformed
 
+    private void btn_eliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar1ActionPerformed
+        this.EliminarPendientes();
+        cargarTabla();
+    }//GEN-LAST:event_btn_eliminar1ActionPerformed
+
+    private void btn_eliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar2ActionPerformed
+        this.EliminarProgreso();
+        cargarTabla();
+        if (!checaProgreso()) {
+            restableceTiempo();
+            resetearTodoTimer();
+        }
+
+    }//GEN-LAST:event_btn_eliminar2ActionPerformed
+
     private void resetearTodoTimer() {
         t.stop();
         contPomodoros = 0;
@@ -751,6 +820,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnPendienteAProgreso;
     private javax.swing.JButton btnPendienteATerminado;
     private javax.swing.JButton btnRestablecer;
+    private javax.swing.JButton btn_eliminar1;
+    private javax.swing.JButton btn_eliminar2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
