@@ -2,6 +2,7 @@ package ObjectosNegocio;
 
 import java.util.Objects;
 import java.util.Date;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -9,10 +10,18 @@ import java.util.Date;
  */
 public class Actividades {
 
+    public ObjectId id;
     public String Nombre_Tarea;
     public String estado;
     public Date fechaterminacion;
 
+    public Actividades(ObjectId id, String Nombre_Tarea, String estado, Date fechaterminacion) {
+        this.id = id;
+        this.Nombre_Tarea = Nombre_Tarea;
+        this.estado = estado;
+        this.fechaterminacion = fechaterminacion;
+    }
+    
     //Construtor para agregar el campo fecha
     public Actividades(String Nombre_Tarea, String estado, Date fechaterminacion) {
         this.Nombre_Tarea = Nombre_Tarea;
@@ -54,6 +63,14 @@ public class Actividades {
 
     public void setFechaterminacion(Date fechaterminacion) {
         this.fechaterminacion = fechaterminacion;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     @Override

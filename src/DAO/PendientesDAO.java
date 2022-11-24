@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -47,7 +48,7 @@ public class PendientesDAO extends BaseDAO<Actividades> {
         while (cursor.hasNext()) {
             DBObject obj = cursor.next();
             ListaActividad.add(
-                    new Actividades((String) obj.get("nombre"), (String) obj.get("estado"), (Date) obj.get("fechaterminacion"))
+                    new Actividades((ObjectId) obj.get("_id"), (String) obj.get("nombre"), (String) obj.get("estado"), (Date) obj.get("fechaterminacion"))
             );
         }
         return ListaActividad;
@@ -55,9 +56,10 @@ public class PendientesDAO extends BaseDAO<Actividades> {
 
     @Override
     public void modificar(Actividades actividades) {
-        DBObject resultado = collection.findOne(new BasicDBObject("nombre", actividades.getNombre_Tarea()));
+        DBObject resultado = collection.findOne(new BasicDBObject("_id", actividades.id));
         if (resultado != null) {
             BasicDBObject nuevosCampos = new BasicDBObject(); // "estado", actividades.getEstado()
+            nuevosCampos.append("nombre", actividades.getNombre_Tarea());
             nuevosCampos.append("estado", actividades.getEstado());
             nuevosCampos.append("fechaterminacion", actividades.getFechaterminacion());
             BasicDBObject operacion = new BasicDBObject("$set", nuevosCampos);

@@ -276,6 +276,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnOmitir = new javax.swing.JButton();
         btn_eliminar1 = new javax.swing.JButton();
         btn_eliminar2 = new javax.swing.JButton();
+        btnEditarPendiente = new javax.swing.JButton();
+        btnEditarProgreso = new javax.swing.JButton();
 
         tblPendientes1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -523,6 +525,22 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(btn_eliminar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 640, -1, -1));
 
+        btnEditarPendiente.setText("Modificar");
+        btnEditarPendiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarPendienteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEditarPendiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 640, -1, -1));
+
+        btnEditarProgreso.setText("Modificar");
+        btnEditarProgreso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarProgresoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEditarProgreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 670, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -533,7 +551,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
 
         pack();
@@ -757,6 +775,79 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btn_eliminar2ActionPerformed
 
+    private void btnEditarPendienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPendienteActionPerformed
+        Actividades tareaPendiente;
+        try {
+            DefaultTableModel dtmPendiente = (DefaultTableModel) tblPendientes.getModel();
+            tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblPendientes.getSelectedRow(), 0);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "No sea seleccionado una tarea", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        String nuevoNombre = JOptionPane.showInputDialog(rootPane, "Tarea", "Agregar", JOptionPane.QUESTION_MESSAGE);
+        if (nuevoNombre != null) {
+            int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere modificar el registro?", "info", JOptionPane.YES_NO_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                List<Actividades> list = this.PendienteControl.consultar();
+                if (nuevoNombre.isEmpty() || nuevoNombre.isBlank()) {
+                    JOptionPane.showMessageDialog(rootPane, "La actividad esta vacia", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (nuevoNombre.length() > 100) {
+                    JOptionPane.showMessageDialog(rootPane, "Logitud mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (list.contains(new Actividades(nuevoNombre))) {
+                    JOptionPane.showMessageDialog(rootPane, "La actividad ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                tareaPendiente.setNombre_Tarea(nuevoNombre);
+                PendienteControl.modificar(tareaPendiente);
+                JOptionPane.showMessageDialog(rootPane, "La actividad se modifico con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
+                this.cargarTabla();
+            }
+        }
+    }//GEN-LAST:event_btnEditarPendienteActionPerformed
+
+    private void btnEditarProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProgresoActionPerformed
+
+        Actividades tareaPendiente;
+        try {
+            DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
+            tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "No sea seleccionado una tarea", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String nuevoNombre = JOptionPane.showInputDialog(rootPane, "Tarea", "Agregar", JOptionPane.QUESTION_MESSAGE);
+        if (nuevoNombre != null) {
+            int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere modificar el registro?", "info", JOptionPane.YES_NO_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                List<Actividades> list = this.PendienteControl.consultar();
+                if (nuevoNombre.isEmpty() || nuevoNombre.isBlank()) {
+                    JOptionPane.showMessageDialog(rootPane, "La actividad esta vacia", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (nuevoNombre.length() > 100) {
+                    JOptionPane.showMessageDialog(rootPane, "Logitud mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (list.contains(new Actividades(nuevoNombre))) {
+                    JOptionPane.showMessageDialog(rootPane, "La actividad ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
+                tareaPendiente = (Actividades) dtmPendiente.getValueAt(tblProgreso.getSelectedRow(), 0);
+                tareaPendiente.setNombre_Tarea(nuevoNombre);
+                PendienteControl.modificar(tareaPendiente);
+                JOptionPane.showMessageDialog(rootPane, "La actividad se modifico con exito!! ", "Listo", JOptionPane.INFORMATION_MESSAGE);
+                this.cargarTabla();
+            }
+        }
+    }//GEN-LAST:event_btnEditarProgresoActionPerformed
+
     private void resetearTodoTimer() {
         t.stop();
         contPomodoros = 0;
@@ -814,6 +905,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Btn_Agregar_Tarea;
     private javax.swing.JButton btnContinuar;
+    private javax.swing.JButton btnEditarPendiente;
+    private javax.swing.JButton btnEditarProgreso;
     private javax.swing.JButton btnEmpezar;
     private javax.swing.JButton btnOmitir;
     private javax.swing.JButton btnPausar;

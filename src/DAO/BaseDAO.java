@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
+
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
@@ -17,15 +18,11 @@ import java.util.ArrayList;
  */
 public abstract class BaseDAO<Actividad> {
 
-    public BaseDAO() {
-        
-        
-    }
-    
-     public abstract void agregar(Actividad actividad);
-     public abstract ArrayList<Actividad> consultar();
-     public abstract void crearConexion();
-     public abstract void modificar(Actividad actividad);
-     public abstract void Eliminar(Actividad actividad);
+    public BaseDAO() {}
+    public abstract void agregar(Actividad actividad);
+    public abstract ArrayList<Actividad> consultar();
+    public abstract void crearConexion();
+    public abstract void modificar(Actividad actividad);
+    public abstract void Eliminar(Actividad actividad);
 
 }
