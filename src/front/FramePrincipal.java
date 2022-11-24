@@ -118,6 +118,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             lblindicador.setText("Se ha acabado el tiempo");
             btnContinuar.setVisible(true);
             timerBeep.start();
+            btnPausar.setEnabled(false);
             if (!esDescanso) {
                 btnOmitir.setVisible(true);
             }
@@ -161,12 +162,16 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnEmpezar.setEnabled(checaProgreso());
         btnPausar.setEnabled(false);
         btnRestablecer.setEnabled(false);
+        btnOmitir.setVisible(false);
         ocultarIndicador();
         if (timerLB.isRunning()) {
             timerLB.stop();
             lblTiempo.setVisible(true);
             btnPausar.setText("Pausar");
             banderaPausa = true;
+        }
+        if (timerBeep.isRunning()) {
+            timerBeep.stop();
         }
     }
 
@@ -861,6 +866,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void btn_eliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar1ActionPerformed
         this.EliminarPendientes();
         cargarTabla();
+        
     }//GEN-LAST:event_btn_eliminar1ActionPerformed
 
     private void btn_eliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar2ActionPerformed
@@ -952,6 +958,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         setTiempos(TIEMPO_PURO_CERO);
         actualizarLabelTiempo();
         actualizaLblContadorDescansos();
+        btnPausar.setEnabled(false);
+        
+        if (timerBeep.isRunning()) {
+            timerBeep.stop();
+        }
     }
 
     private void actualizaLblContadorDescansos() {
