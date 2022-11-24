@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -206,7 +207,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     };
 
     public void EliminarPendientes() {
-        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere realizar esta actividad", "info", JOptionPane.YES_NO_OPTION);
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere Eliminar esta actividad", "info", JOptionPane.YES_NO_OPTION);
         try {
             if (opcion == JOptionPane.YES_OPTION) {
                 DefaultTableModel dtmPendiente = (DefaultTableModel) tblPendientes.getModel();
@@ -224,7 +225,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     private void EliminarProgreso() {
-        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere realizar esta actividad", "info", JOptionPane.YES_NO_OPTION);
+        int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere Eliminar esta actividad", "info", JOptionPane.YES_NO_OPTION);
         try {
             if (opcion == JOptionPane.YES_OPTION) {
                 DefaultTableModel dtmPendiente = (DefaultTableModel) tblProgreso.getModel();
@@ -253,17 +254,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tblPendientes1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        lblTiempo = new javax.swing.JLabel();
-        btnEmpezar = new javax.swing.JButton();
-        btnPausar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPendientes = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        Btn_Agregar_Tarea = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        lblindicador = new javax.swing.JLabel();
-        btnContinuar = new javax.swing.JButton();
-        lblContadorDescansos = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblProgreso = new javax.swing.JTable();
         btnPendienteAProgreso = new javax.swing.JButton();
@@ -271,13 +265,23 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnPendienteATerminado = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblTerminado = new javax.swing.JTable();
-        btnRestablecer = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        btnOmitir = new javax.swing.JButton();
         btn_eliminar1 = new javax.swing.JButton();
         btn_eliminar2 = new javax.swing.JButton();
         btnEditarPendiente = new javax.swing.JButton();
         btnEditarProgreso = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        Btn_Agregar_Tarea = new javax.swing.JButton();
+        lblindicador = new javax.swing.JLabel();
+        btnContinuar = new javax.swing.JButton();
+        lblContadorDescansos = new javax.swing.JLabel();
+        btnEmpezar = new javax.swing.JButton();
+        btnRestablecer = new javax.swing.JButton();
+        btnPausar = new javax.swing.JButton();
+        btnOmitir = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        lblTiempo = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         tblPendientes1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -308,32 +312,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Pomodoro");
         setResizable(false);
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblTiempo.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
-        lblTiempo.setText("00:00:00");
-        lblTiempo.setToolTipText("");
-        jPanel1.add(lblTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 18, -1, 54));
-
-        btnEmpezar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        btnEmpezar.setText("Empezar");
-        btnEmpezar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEmpezarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnEmpezar, new org.netbeans.lib.awtextra.AbsoluteConstraints(692, 18, -1, -1));
-
-        btnPausar.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        btnPausar.setText("Pausar");
-        btnPausar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPausarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnPausar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 20, -1, -1));
+        jPanel1.setLayout(null);
 
         tblPendientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -363,40 +345,20 @@ public class FramePrincipal extends javax.swing.JFrame {
             tblPendientes.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 320, -1));
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(480, 180, 320, 402);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(12, 94, 166));
         jLabel1.setText("Tareas Terminada");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 170, -1, -1));
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(1310, 150, 162, 21);
 
-        Btn_Agregar_Tarea.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        Btn_Agregar_Tarea.setText("Agregar Tarea");
-        Btn_Agregar_Tarea.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Btn_Agregar_TareaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(Btn_Agregar_Tarea, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 52, 221, 54));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(12, 94, 166));
         jLabel2.setText("Tareas Pendientes");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, -1, -1));
-
-        lblindicador.setForeground(new java.awt.Color(255, 51, 51));
-        lblindicador.setText("INDICADOR");
-        lblindicador.setToolTipText("");
-        jPanel1.add(lblindicador, new org.netbeans.lib.awtextra.AbsoluteConstraints(294, 52, 175, -1));
-
-        btnContinuar.setText("Continuar");
-        btnContinuar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnContinuarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnContinuar, new org.netbeans.lib.awtextra.AbsoluteConstraints(294, 86, -1, -1));
-
-        lblContadorDescansos.setText("Contador de Descansos");
-        jPanel1.add(lblContadorDescansos, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 18, 276, -1));
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(560, 150, 170, 21);
 
         jScrollPane4.setPreferredSize(new java.awt.Dimension(452, 402));
 
@@ -431,7 +393,8 @@ public class FramePrincipal extends javax.swing.JFrame {
             tblProgreso.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 200, 330, 427));
+        jPanel1.add(jScrollPane4);
+        jScrollPane4.setBounds(820, 180, 370, 400);
 
         btnPendienteAProgreso.setText("-->");
         btnPendienteAProgreso.addActionListener(new java.awt.event.ActionListener() {
@@ -439,11 +402,14 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnPendienteAProgresoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPendienteAProgreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 640, -1, -1));
+        jPanel1.add(btnPendienteAProgreso);
+        btnPendienteAProgreso.setBounds(480, 620, 72, 23);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(12, 94, 166));
         jLabel3.setText("Tareas en Progreso");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 170, -1, -1));
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(930, 150, 180, 21);
 
         btnPendienteATerminado.setText("-->");
         btnPendienteATerminado.addActionListener(new java.awt.event.ActionListener() {
@@ -451,7 +417,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnPendienteATerminadoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPendienteATerminado, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 640, -1, -1));
+        jPanel1.add(btnPendienteATerminado);
+        btnPendienteATerminado.setBounds(1120, 620, 72, 23);
 
         tblTerminado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -481,16 +448,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tblTerminado);
 
-        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 200, 330, -1));
-
-        btnRestablecer.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        btnRestablecer.setText("Restablece");
-        btnRestablecer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRestablecerActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnRestablecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 80, -1, -1));
+        jPanel1.add(jScrollPane5);
+        jScrollPane5.setBounds(1210, 180, 330, 400);
 
         jButton1.setText("<--");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -498,16 +457,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 640, -1, -1));
-
-        btnOmitir.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        btnOmitir.setText("Omitir");
-        btnOmitir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOmitirActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnOmitir, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 80, -1, -1));
+        jPanel1.add(jButton1);
+        jButton1.setBounds(820, 620, 72, 23);
 
         btn_eliminar1.setText("Eliminar  Pendiente");
         btn_eliminar1.addActionListener(new java.awt.event.ActionListener() {
@@ -515,7 +466,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btn_eliminar1ActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_eliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 640, -1, -1));
+        jPanel1.add(btn_eliminar1);
+        btn_eliminar1.setBounds(570, 620, 132, 23);
 
         btn_eliminar2.setText("Eliminar  Progreso");
         btn_eliminar2.addActionListener(new java.awt.event.ActionListener() {
@@ -523,7 +475,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btn_eliminar2ActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_eliminar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 640, -1, -1));
+        jPanel1.add(btn_eliminar2);
+        btn_eliminar2.setBounds(900, 620, 126, 23);
 
         btnEditarPendiente.setText("Modificar");
         btnEditarPendiente.addActionListener(new java.awt.event.ActionListener() {
@@ -531,7 +484,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnEditarPendienteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEditarPendiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 640, -1, -1));
+        jPanel1.add(btnEditarPendiente);
+        btnEditarPendiente.setBounds(720, 620, 81, 23);
 
         btnEditarProgreso.setText("Modificar");
         btnEditarProgreso.addActionListener(new java.awt.event.ActionListener() {
@@ -539,19 +493,161 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnEditarProgresoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEditarProgreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 670, -1, -1));
+        jPanel1.add(btnEditarProgreso);
+        btnEditarProgreso.setBounds(1030, 620, 81, 23);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        Btn_Agregar_Tarea.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Btn_Agregar_Tarea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-add-40.png"))); // NOI18N
+        Btn_Agregar_Tarea.setText("Agregar Tarea");
+        Btn_Agregar_Tarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_Agregar_TareaActionPerformed(evt);
+            }
+        });
+
+        lblindicador.setForeground(new java.awt.Color(255, 51, 51));
+        lblindicador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-sirena-19.png"))); // NOI18N
+        lblindicador.setText("INDICADOR");
+        lblindicador.setToolTipText("");
+
+        btnContinuar.setText("Continuar");
+        btnContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContinuarActionPerformed(evt);
+            }
+        });
+
+        lblContadorDescansos.setText("Contador de Descansos");
+
+        btnEmpezar.setFont(new java.awt.Font("Arimo", 0, 18)); // NOI18N
+        btnEmpezar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-play-25.png"))); // NOI18N
+        btnEmpezar.setText("Empezar");
+        btnEmpezar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmpezarActionPerformed(evt);
+            }
+        });
+
+        btnRestablecer.setFont(new java.awt.Font("Arimo", 0, 18)); // NOI18N
+        btnRestablecer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-grabar-25.png"))); // NOI18N
+        btnRestablecer.setText("Restablecer");
+        btnRestablecer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestablecerActionPerformed(evt);
+            }
+        });
+
+        btnPausar.setFont(new java.awt.Font("Arimo", 0, 18)); // NOI18N
+        btnPausar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-pausa-25.png"))); // NOI18N
+        btnPausar.setText("Pausar");
+        btnPausar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPausarActionPerformed(evt);
+            }
+        });
+
+        btnOmitir.setText("Omitir");
+        btnOmitir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOmitirActionPerformed(evt);
+            }
+        });
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblTiempo.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        lblTiempo.setText("00:00:00");
+        lblTiempo.setToolTipText("");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 217, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addComponent(lblTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(8, 8, 8)
+                    .addComponent(lblTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(8, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(btnEmpezar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRestablecer))
+                            .addComponent(lblindicador, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnOmitir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnContinuar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnPausar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(32, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Btn_Agregar_Tarea)
+                            .addComponent(lblContadorDescansos, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(lblContadorDescansos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Btn_Agregar_Tarea, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEmpezar)
+                    .addComponent(btnRestablecer)
+                    .addComponent(btnPausar))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnContinuar)
+                    .addComponent(lblindicador))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnOmitir)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(20, 240, 450, 310);
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Please .png"))); // NOI18N
+        jLabel4.setText("jLabel4");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(0, 0, 1560, 750);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1061, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1558, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 748, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -573,12 +669,14 @@ public class FramePrincipal extends javax.swing.JFrame {
             t.stop();
             timerLB.start();
             btnPausar.setText("Reanudar");
+            btnPausar.setIcon(new ImageIcon("src/img/icons8-play-25.png"));
             banderaPausa = false;
         } else {
             timerLB.stop();
             lblTiempo.setVisible(true);
             t.restart();
             btnPausar.setText("Pausar");
+            btnPausar.setIcon(new ImageIcon("src/img/icons8-pausa-25.png"));
             banderaPausa = true;
         }
     }//GEN-LAST:event_btnPausarActionPerformed
@@ -784,7 +882,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "No sea seleccionado una tarea", "ERROR", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        String nuevoNombre = JOptionPane.showInputDialog(rootPane, "Tarea", "Agregar", JOptionPane.QUESTION_MESSAGE);
+        String nuevoNombre = JOptionPane.showInputDialog(rootPane, "Tarea", "Modificar", JOptionPane.QUESTION_MESSAGE);
         if (nuevoNombre != null) {
             int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere modificar el registro?", "info", JOptionPane.YES_NO_OPTION);
             if (opcion == JOptionPane.YES_OPTION) {
@@ -821,7 +919,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             return;
         }
 
-        String nuevoNombre = JOptionPane.showInputDialog(rootPane, "Tarea", "Agregar", JOptionPane.QUESTION_MESSAGE);
+        String nuevoNombre = JOptionPane.showInputDialog(rootPane, "Tarea", "Modificar", JOptionPane.QUESTION_MESSAGE);
         if (nuevoNombre != null) {
             int opcion = JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere modificar el registro?", "info", JOptionPane.YES_NO_OPTION);
             if (opcion == JOptionPane.YES_OPTION) {
@@ -919,7 +1017,10 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
